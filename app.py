@@ -22,7 +22,7 @@ def index():
     #          FROM cb_2016_us_cbsa_500k;'
     query = 'SELECT * FROM msa_imp;'
     msa = pd.read_sql_query(query, engine)
-    
+    msa['geoid'] = msa['geoid'].astype('str')
     # api
     url = 'https://api.census.gov/data/2016/pep/population?get=POP,GEONAME&for=metropolitan+statistical+area/micropolitan+statistical+area:*'
     pops = requests.get(url).json()
