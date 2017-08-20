@@ -4,4 +4,4 @@ CREATE TABLE msa_exp (
   lat numeric
   );
 
-\copy msa.csv TO 'msa_exp' DELIMITER ',' CSV HEADER;
+\copy msa_exp FROM 'msa.csv' DELIMITER ',' CSV HEADER;
