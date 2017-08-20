@@ -20,7 +20,7 @@ def index():
     #                 ST_X(ST_Centroid(geom)) as lon,\
     #                 ST_Y(ST_Centroid(geom)) as lat\
     #          FROM cb_2016_us_cbsa_500k;'
-    query = 'SELECT * FROM msa_exp;'
+    query = 'SELECT * FROM msa_imp;'
     msa = pd.read_sql_query(query, engine)
     
     # api
