@@ -12,4 +12,4 @@ shp2pgsql -s 4326 data/cb_2016_us_cbsa_500k.shp | psql -d $db
 # generate csv with msa lat lon
 psql -f msa_export.sql
 
-# psql -c "\copy msa.csv TO 'msa_exp' DELIMITER ',' CSV HEADER;"
+# psql -f heroku_msa.sql 
