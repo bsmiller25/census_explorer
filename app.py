@@ -16,13 +16,14 @@ def index():
     engine = sql.create_engine(os.getenv('DATABASE_URL'))
     
     # read in msa shapes
-    query = 'SELECT geoid, \
-                    ST_X(ST_Centroid(geom)) as lon,\
-                    ST_Y(ST_Centroid(geom)) as lat\
-             FROM cb_2016_us_cbsa_500k;'
+    # query = 'SELECT geoid, \
+    #                 ST_X(ST_Centroid(geom)) as lon,\
+    #                 ST_Y(ST_Centroid(geom)) as lat\
+    #          FROM cb_2016_us_cbsa_500k;'
+    query = 'SELECT * FROM msa_exp;'
     msa = pd.read_sql_query(query, engine)
-
-    #
+    
+    # api
     url = 'https://api.census.gov/data/2016/pep/population?get=POP,GEONAME&for=metropolitan+statistical+area/micropolitan+statistical+area:*'
     pops = requests.get(url).json()
     pops_df = pd.DataFrame(pops[1:], columns=['pop', 'name', 'msa'])
