@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import sqlalchemy as sql 
 import os
+from df_to_geojson import df_to_geojson
 app = Flask(__name__)
 
 
@@ -23,9 +24,14 @@ def index():
 
     #
     url = 'https://api.census.gov/data/2016/pep/population?get=POP,GEONAME&for=metropolitan+statistical+area/micropolitan+statistical+area:*'
-    pops = {d[2]: d[:2] for d in requests.get(url).json()}
+    pops = requests.get(url).json()
+    pops_df = pd.DataFrame(pops[1:], columns=['pop', 'name', 'msa'])
+    pops_df = pops_df.merge(msa, left_on='msa', right_on='geoid')
+    pops_df['pop'] = round(pops_df['pop'].astype('int')/1000000, 2)
+    pops_df = pops_df.sort_values('pop', ascending=False)[:100]
     
+    pops_gj = df_to_geojson(pops_df, properties=['name', 'pop'], lat='lat', lon='lon')
     return render_template('index.html',
                            title = 'Census Explorer',
-                           pops = pops
+                           pops = pops_gj
                            )
